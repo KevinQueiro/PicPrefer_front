@@ -10,12 +10,18 @@ const NewPhoto = () => {
   const [author, setAuthor] = useState();
   const [file, setFile] = useState();
   const [isDisabled, setIsDisabled] = useState(true);
+  const [errorMessage, setErrorMessage] = useState();
 
   const handleChange_1 = (e) => {
+    if (e.target.files[0].size > 10 * 1024 * 1024) { // 10 MB in bytes
+      setErrorMessage('El archivo es demasiado grande. El tamaño máximo permitido es de 10 MB.');
+    } else {
+    setErrorMessage(null);
     setFile(e.target.files[0])
     setImages([])
     setImages((images_1) => [...images_1, URL.createObjectURL(e.target.files[0])]);
     return URL.revokeObjectURL(e.target.files[0])
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -51,6 +57,7 @@ const NewPhoto = () => {
           </label>
           <div>
             <input id='img_1' type="file" onChange={handleChange_1} />
+            {errorMessage && <p>{errorMessage}</p>}
             {image.map((row, index) =>
               <div key={index}>
                 <img src={row} alt={row} className='custom-img' />

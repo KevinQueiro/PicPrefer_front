@@ -3,10 +3,12 @@ import { GetLength, GetPhoto } from '../../Requests/gets'
 import { PutFavorite } from '../../Requests/puts'
 import generarParesTodosContraTodos from '../../utils/pairs'
 import numeroRandom from '../../utils/random'
+import { useNavigate } from 'react-router-dom';
 
 import './Dashboard.css'
 
 const Dashboard = () => {
+  const navigate = useNavigate();
 
   const [tct, setTct] = useState()
   const [photo_1, setPhoto_1] = useState()
@@ -39,12 +41,15 @@ const Dashboard = () => {
   }
 
   const favorite = async (event) => {
-    console.log(event.target.name);
+    console.log('tctL', tct.length);
     switch (event.target.name) {
       case 'photo_1':
         const res_1 = await PutFavorite(photo_1[0]._id)
         if (res_1.data === 'done') {
           comparePics()
+        }
+        if (tct.length === 0){
+          navigate('/end')
         }
         break;
 
@@ -53,6 +58,9 @@ const Dashboard = () => {
         console.log(res_2);
         if (res_2.data === 'done') {
           comparePics()
+        }
+        if (tct.length === 0){
+          navigate('/end')
         }
         break;
 
