@@ -9,7 +9,6 @@ function generarParesTodosContraTodos(numero) {
     }
 
     const paresFinales = Array.from(paresGenerados)
-console.log(paresFinales);
     return paresFinales
 }
 

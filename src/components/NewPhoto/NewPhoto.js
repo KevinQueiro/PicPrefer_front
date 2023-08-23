@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { PostRequest } from "../../Requests/posts";
+import { useNavigate } from "react-router-dom";
 
 import './NewPhoto.css'
 
 const NewPhoto = () => {
+
+  const navigate = useNavigate()
 
   const [image, setImages] = useState([]);
   const [name, setName] = useState();
@@ -16,11 +19,11 @@ const NewPhoto = () => {
     if (e.target.files[0].size > 10 * 1024 * 1024) { // 10 MB in bytes
       setErrorMessage('El archivo es demasiado grande. El tamaño máximo permitido es de 10 MB.');
     } else {
-    setErrorMessage(null);
-    setFile(e.target.files[0])
-    setImages([])
-    setImages((images_1) => [...images_1, URL.createObjectURL(e.target.files[0])]);
-    return URL.revokeObjectURL(e.target.files[0])
+      setErrorMessage(null);
+      setFile(e.target.files[0])
+      setImages([])
+      setImages((images_1) => [...images_1, URL.createObjectURL(e.target.files[0])]);
+      return URL.revokeObjectURL(e.target.files[0])
     }
   }
 
@@ -36,14 +39,13 @@ const NewPhoto = () => {
 
   useEffect(() => {
     if (!!file && !!name && !!author) {
-      console.log(isDisabled)
       setIsDisabled(false)
     }
   }, [image, author, file, isDisabled, name]);
 
   return (
     <div>
-      <button>
+      <button onClick={() => navigate(-1)}>
         volver
       </button>
       <div className="container">

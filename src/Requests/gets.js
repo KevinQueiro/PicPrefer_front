@@ -26,3 +26,12 @@ export const GetPhoto = async (sid) => {
     })
     return res
 }
+
+export const GetToManage = async () => {
+    const res = await axios.get(`http://localhost:4000/manage`, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    })
+    return res
+}

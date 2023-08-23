@@ -19,16 +19,12 @@ const Dashboard = () => {
   }, [])
 
   const listLength = async () => {
-    console.log('listLength');
     let res = await GetLength()
     return res.data.size
   }
 
   const generarPares = async () => {
-    console.log('generarPares 1');
     let size = await listLength()
-    console.log('generarPares 2');
-    console.log(size);
     setTct(generarParesTodosContraTodos(size - 1))
   }
 
@@ -41,26 +37,26 @@ const Dashboard = () => {
   }
 
   const favorite = async (event) => {
-    console.log('tctL', tct.length);
     switch (event.target.name) {
       case 'photo_1':
         const res_1 = await PutFavorite(photo_1[0]._id)
+        if (tct.length === 0) {
+          navigate('/end/2')
+          break;
+        }
         if (res_1.data === 'done') {
           comparePics()
-        }
-        if (tct.length === 0){
-          navigate('/end')
         }
         break;
 
       case 'photo_2':
         const res_2 = await PutFavorite(photo_2[0]._id)
-        console.log(res_2);
+        if (tct.length === 0) {
+          navigate('/end/2')
+          break;
+        }
         if (res_2.data === 'done') {
           comparePics()
-        }
-        if (tct.length === 0){
-          navigate('/end')
         }
         break;
 
@@ -74,26 +70,43 @@ const Dashboard = () => {
       {photo_1 && photo_2 ? (
         <></>
       ) : (
-        <button className="compare-button" onClick={comparePics}> Comparar </button>
+        <div>
+          <p>
+            ¡Descubre y elige tus fotos favoritas! <br />
+            Bienvenido a nuestra página de elección de fotos. <br />
+            Explora dos increíbles imágenes y vota por tu preferida.
+          </p>
+          <button className="compare-button" onClick={comparePics}> Comenzar </button>
+          <p>
+            ¿Tienes tu propia foto para compartir?  <br />
+            ¡Sube la tuya y déjanos maravillados! <br />
+            Tu visión única cuenta.
+          </p>
+          <button className="compare-button" onClick={()=>navigate('/new')}> Subir </button>
+          <p>
+            Mira el ranking aqui.
+          </p>
+          <button className="compare-button" onClick={()=>navigate('/end/1')}> Top </button>
+        </div>
       )}
       <div className="photo-container">
-      {photo_1 ? (
-        <div className="photo-space" >
-          <h4 className="photo-name">{photo_1[0].name}</h4>
-          <img className="custom-img" name='photo_1' src={`${photo_1[0].secure_url}`} alt={`${photo_1[0].name}`} onClick={favorite} />
-        </div>
-      ) : (
-        <></>
-      )}
-      {photo_2 ? (
-        <div className="photo-space">
-          <h4 className="photo-name">{photo_2[0].name}</h4>
-          <img className="custom-img" name='photo_2' src={`${photo_2[0].secure_url}`} alt={`${photo_2[0].name}`} onClick={favorite} />
-        </div>
-      ) : (
-        <></>
+        {photo_1 ? (
+          <div className="photo-space" >
+            <h4 className="photo-name">{photo_1[0].name}</h4>
+            <img className="custom-img" name='photo_1' src={`${photo_1[0].secure_url}`} alt={`${photo_1[0].name}`} onClick={favorite} />
+          </div>
+        ) : (
+          <></>
         )}
-        </div>
+        {photo_2 ? (
+          <div className="photo-space">
+            <h4 className="photo-name">{photo_2[0].name}</h4>
+            <img className="custom-img" name='photo_2' src={`${photo_2[0].secure_url}`} alt={`${photo_2[0].name}`} onClick={favorite} />
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   )
 }
